@@ -1,4 +1,4 @@
-package com.coutinho.adayane.storesapi.entity;
+package com.coutinho.adayane.storesapi.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

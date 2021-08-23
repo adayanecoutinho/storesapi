@@ -1,6 +1,7 @@
 package com.coutinho.adayane.storesapi.controller;
 
-import com.coutinho.adayane.storesapi.entity.Cep;
+import com.coutinho.adayane.storesapi.model.Cep;
+import com.coutinho.adayane.storesapi.model.exception.FaixaValidateException;
 import com.coutinho.adayane.storesapi.service.CepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/cep")
@@ -20,7 +22,11 @@ public class CepController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createCep(@RequestBody @Valid Cep newCep){
-        cepService.createCep(newCep);
+        try {
+            cepService.createCep(newCep);
+        }catch (FaixaValidateException e){
+            throw new FaixaValidateException(e.getMessage());
+        }
     }
 
     @GetMapping
@@ -31,8 +37,14 @@ public class CepController {
 
      @GetMapping("/{id}")
      @ResponseStatus(HttpStatus.OK)
-     public ResponseEntity findById(@PathVariable Long id){
-        return cepService.findById(id);
+     public ResponseEntity<Cep> findById(@PathVariable Long id){
+         Optional<Cep> optional = cepService.findById(id);
+
+         if(optional.isEmpty()){
+             return ResponseEntity.notFound().build();
+         }
+
+         return ResponseEntity.ok().body(optional.get());
      }
 
      @GetMapping("/lojas/{cep}")
@@ -42,8 +54,12 @@ public class CepController {
      }
 
      @PutMapping("/{id}")
-     public ResponseEntity<Cep> updateById(@PathVariable Long id, @RequestBody @Valid Cep newCep){
-        return cepService.updateById(id,newCep);
+     public void updateById(@PathVariable Long id, @RequestBody @Valid Cep newCep){
+         try {
+             cepService.updateById(id,newCep);
+         }catch (FaixaValidateException e){
+             throw new FaixaValidateException(e.getMessage());
+         }
      }
 
      @DeleteMapping("/{id}")
