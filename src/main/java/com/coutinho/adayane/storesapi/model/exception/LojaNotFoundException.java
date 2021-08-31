@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class LojaValidateException extends RuntimeException{
+public class LojaNotFoundException extends RuntimeException {
 
-    public LojaValidateException(String msg){
+    public LojaNotFoundException(String msg) {
         super(msg);
     }
 }

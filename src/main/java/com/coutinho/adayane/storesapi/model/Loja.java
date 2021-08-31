@@ -13,11 +13,11 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cep {
+public class Loja {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @JsonProperty("codigo_loja")
     @Column(nullable = false)
@@ -30,4 +30,6 @@ public class Cep {
     @JsonProperty("faixa_fim")
     @Column(nullable = false)
     private Integer faixaFim;
+
+
 }
