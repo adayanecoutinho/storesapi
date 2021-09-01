@@ -8,13 +8,14 @@ import com.coutinho.adayane.storesapi.model.exception.LojaNotFoundException;
 import com.coutinho.adayane.storesapi.service.LojaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -36,8 +37,8 @@ public class LojaController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Loja> listAll() {
-        return lojaService.listAll();
+    public Page<Loja> listAll(Pageable pageable) {
+        return lojaService.listAll(pageable);
     }
 
     @GetMapping("/{id}")

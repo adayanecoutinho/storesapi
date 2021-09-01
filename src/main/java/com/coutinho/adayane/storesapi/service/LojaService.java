@@ -7,9 +7,10 @@ import com.coutinho.adayane.storesapi.model.exception.LojaNotFoundException;
 import com.coutinho.adayane.storesapi.repository.LojaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +19,14 @@ import java.util.Optional;
 public class LojaService {
 
     private final LojaRepository lojaRepository;
+
+
+    public Loja createCep(LojaDto dto) {
+        Loja lojaToSave = dtoToModel(null, dto);
+        validationFaixaContida(lojaToSave);
+
+        return lojaRepository.save(lojaToSave);
+    }
 
     private static Loja dtoToModel(final Long id, final LojaDto dto) {
         final Loja loja = new Loja();
@@ -29,19 +38,6 @@ public class LojaService {
         loja.setFaixaFim(dto.getFaixaFim());
 
         return loja;
-    }
-
-    public Loja createCep(LojaDto dto) {
-        Loja lojaToSave = dtoToModel(null, dto);
-        validationFaixaContida(lojaToSave);
-
-        return lojaRepository.save(lojaToSave);
-    }
-
-    public List<Loja> listAll() {
-        List<Loja> allLoja = lojaRepository.findAll();
-
-        return allLoja;
     }
 
     public Optional<Loja> findById(long id) {
@@ -109,5 +105,11 @@ public class LojaService {
             throw new FaixaValidationException("Não possui Loja cadastrada nessa faixa de CEP " + cep);
         }
 
+    }
+
+    public Page<Loja> listAll(Pageable pageable) {
+        Page<Loja> allLoja = lojaRepository.findAll(pageable);
+
+        return allLoja;
     }
 }
