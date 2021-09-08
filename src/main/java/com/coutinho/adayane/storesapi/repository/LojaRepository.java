@@ -16,6 +16,6 @@ public interface LojaRepository extends JpaRepository<Loja, Long> {
             "OR (:faixaFim BETWEEN C.faixaInicio AND C.faixaFim))")
     Boolean atualizaFaixaVerificaEstaContida(final Long id, final Integer faixaIni, final Integer faixaFim);
 
-    @Query(value = "SELECT C.codigoLoja FROM Loja C WHERE C.faixaInicio <= :cep AND C.faixaFim >= :cep")
+    @Query(value = "SELECT C.codigoLoja FROM Loja C WHERE (:cep BETWEEN C.faixaInicio AND C.faixaFim)")
     String faixaRetornaLojafinal(final Integer cep);
 }
