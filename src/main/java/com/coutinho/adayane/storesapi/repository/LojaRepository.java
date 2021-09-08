@@ -8,12 +8,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LojaRepository extends JpaRepository<Loja, Long> {
 
-    @Query(value = "SELECT COUNT(1) > 0 FROM Loja C WHERE (C.faixaInicio BETWEEN :faixaIni AND :faixaFim) " +
-            "OR (C.faixaFim BETWEEN :faixaIni AND :faixaFim)")
+    @Query(value = "SELECT COUNT(1) > 0 FROM Loja C WHERE (:faixaIni BETWEEN C.faixaInicio AND C.faixaFim) " +
+            "OR (:faixaFim BETWEEN C.faixaInicio AND C.faixaFim)")
     Boolean faixaEstaContidaEmFaixaExiste(final Integer faixaIni, final Integer faixaFim);
 
-    @Query(value = "SELECT COUNT(1) > 0 FROM Loja C WHERE C.id != :id AND ((C.faixaInicio BETWEEN :faixaIni AND :faixaFim) " +
-            "OR (C.faixaFim BETWEEN :faixaIni AND :faixaFim))")
+    @Query(value = "SELECT COUNT(1) > 0 FROM Loja C WHERE C.id != :id AND ((:faixaIni BETWEEN C.faixaInicio AND C.faixaFim) " +
+            "OR (:faixaFim BETWEEN C.faixaInicio AND C.faixaFim))")
     Boolean atualizaFaixaVerificaEstaContida(final Long id, final Integer faixaIni, final Integer faixaFim);
 
     @Query(value = "SELECT C.codigoLoja FROM Loja C WHERE C.faixaInicio <= :cep AND C.faixaFim >= :cep")
